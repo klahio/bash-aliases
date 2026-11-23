@@ -5,20 +5,24 @@ Short bash aliases for kubectl, plus helm, Tekton (`tkn`), Argo CD and Flux, wit
 | File | What it has |
 |---|---|
 | `.bash_aliases` | The aliases and the `kns` function |
+| `install.sh` | Links `.bash_aliases` into your home directory and makes `~/.bashrc` load it and `completion.bash` |
 | `completion.bash` | Completion for kubectl and other cloud-native CLIs, cached under `~/.cache/bash_completion.d` and regenerated when a binary is upgraded. Also wires completion to the `k`, `kx`, `h`, `t`, `a` and `f` aliases |
 
 ## Install
 
 ```bash
-git clone git@github.com:klahio/bash-aliases.git ~/.bash-aliases
-ln -sf ~/.bash-aliases/.bash_aliases ~/.bash_aliases
+git clone https://github.com/klahio/bash-aliases.git ~/.bash-aliases
+~/.bash-aliases/install.sh
 ```
 
-Ubuntu's default `~/.bashrc` already sources `~/.bash_aliases`. For completion, add this to the end of `~/.bashrc`, after bash-completion is loaded:
+`install.sh` does the following:
 
-```bash
-[ -f ~/.bash-aliases/completion.bash ] && . ~/.bash-aliases/completion.bash
-```
+- Links `~/.bash_aliases` to the repo. An existing `~/.bash_aliases` is moved to `~/.bash_aliases.bak.<timestamp>` first.
+- Adds a block to the end of `~/.bashrc` that loads `~/.bash_aliases` and `completion.bash`, leaving out what `~/.bashrc` already loads. Ubuntu's default `~/.bashrc` already sources `~/.bash_aliases`, for example.
+
+It is safe to run again, for example after moving the clone. `git pull` in the clone updates the aliases.
+
+To undo it, run `~/.bash-aliases/install.sh --uninstall`. That removes the block and the link, and tells you where the backup of your earlier aliases is.
 
 ## kubectl aliases
 
