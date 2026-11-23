@@ -99,10 +99,12 @@ uninstall() {
 }
 
 main() {
-  local dir downloaded=no
+  local dir target downloaded=no
+  target=${BASH_ALIASES_DIR:-$HOME/.bash-aliases}
   dir=$(source_dir)
-  if [ -z "$dir" ]; then
-    dir=${BASH_ALIASES_DIR:-$HOME/.bash-aliases}
+  # The download directory is managed by this script unless it is a clone, also when this is its own copy there.
+  if [ -z "$dir" ] || { [ "$dir" = "$(cd "$target" 2>/dev/null && pwd)" ] && [ ! -d "$dir/.git" ]; }; then
+    dir=$target
     if [ -d "$dir/.git" ]; then
       echo "$dir is a git clone; using its files as they are (run git pull there to update)"
     else
