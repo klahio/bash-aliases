@@ -11,18 +11,40 @@ Short bash aliases for kubectl, plus helm, Tekton (`tkn`), Argo CD and Flux, wit
 ## Install
 
 ```bash
+curl -fsSL https://raw.githubusercontent.com/klahio/bash-aliases/main/install.sh | bash
+```
+
+This downloads `.bash_aliases`, `completion.bash` and `install.sh` into `~/.bash-aliases` and then:
+
+- Links `~/.bash_aliases` to the downloaded copy. An existing `~/.bash_aliases` is moved to `~/.bash_aliases.bak.<timestamp>` first.
+- Adds a block to the end of `~/.bashrc` that loads `~/.bash_aliases` and `completion.bash`, leaving out what `~/.bashrc` already loads. Ubuntu's default `~/.bashrc` already sources `~/.bash_aliases`, for example.
+
+Run the same command again to update. Nothing is added to `~/.bashrc` twice, and a failed download leaves the installed files as they were. Set `BASH_ALIASES_DIR` to download somewhere other than `~/.bash-aliases`.
+
+To read the script before running it:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/klahio/bash-aliases/main/install.sh -o install.sh
+less install.sh
+bash install.sh
+```
+
+### From a clone
+
+```bash
 git clone https://github.com/klahio/bash-aliases.git ~/.bash-aliases
 ~/.bash-aliases/install.sh
 ```
 
-`install.sh` does the following:
+`install.sh` run from a clone uses the clone's files and downloads nothing. Update with `git pull` in the clone.
 
-- Links `~/.bash_aliases` to the repo. An existing `~/.bash_aliases` is moved to `~/.bash_aliases.bak.<timestamp>` first.
-- Adds a block to the end of `~/.bashrc` that loads `~/.bash_aliases` and `completion.bash`, leaving out what `~/.bashrc` already loads. Ubuntu's default `~/.bashrc` already sources `~/.bash_aliases`, for example.
+### Uninstall
 
-It is safe to run again, for example after moving the clone. `git pull` in the clone updates the aliases.
+```bash
+~/.bash-aliases/install.sh --uninstall
+```
 
-To undo it, run `~/.bash-aliases/install.sh --uninstall`. That removes the block and the link, and tells you where the backup of your earlier aliases is.
+This removes the block from `~/.bashrc` and the `~/.bash_aliases` link, deletes the downloaded files (a clone is left alone), and tells you where the backup of your earlier aliases is.
 
 ## kubectl aliases
 
